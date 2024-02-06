@@ -38,19 +38,36 @@ int main(int argc, char *argv[]) {
             } else {
                 printf("%s: ", argv[ap]);
                 for (j = 0; j < numRead; j++) {
-                    if (argv[ap][0] == 'r') {
+                    if (argv[ap][0] == 'r')
                         printf("%c",
                                isprint((unsigned char)buf[j]) ? buf[j] : '?');
-                    } else {
+                    else
                         printf("%02x", (unsigned int)buf[j]);
-                    }
-                    printf("\n");
                 }
-
-                free(buf);
-                break;
-            case 'w':
+                printf("\n");
             }
+
+            free(buf);
+            break;
+
+        case 'w':
+            numWritten = write(fd, &argv[ap][1], strlen(&argv[ap][1]));
+            if (numWritten == -1) {
+                errExit("write");
+            }
+            printf("%s worte %ld bytes", argv[ap], (long)numWritten);
+            break;
+
+        case 's':
+            offset = getLong(&argv[ap][1], GN_ANY_BASE, argv[ap]);
+            if (lseek(fd, offset, SEEK_SET) == -1)
+                errExit("lseek");
+            printf("%s:seek successed\n", argv[ap]);
+            break;
+
+        default:
+            cmdLineErr("Argument must start with [rRws]:%s\n", argv[ap]);
         }
     }
+    exit(EXIT_SUCCESS);
 }

@@ -13,7 +13,7 @@
 
 #include "error_functions.h"
 
-typedef enum { FALSE, TRUE };
+// typedef enum { FALSE, TRUE };
 
 #define min(n, m) ((m) < (n) ? (m) , (n))
 #define max(n, m) ((m) > (n) ? (m) , (n))
